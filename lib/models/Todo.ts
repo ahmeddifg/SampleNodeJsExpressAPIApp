@@ -1,18 +1,23 @@
 import * as mongoose from 'mongoose';
+
 const Schema = mongoose.Schema;
 
- const Todo =  Schema({
+const Todo = new Schema({
     text: {
         type: String,
         required: true,
         minLength: 1,
         trim: true
     },
-    completed:{
-        type:Boolean,
+    completed: {
+        type: Boolean,
         default: false
     },
-    completedAt:{
+    savedBy: {
+        type: String
+    }
+    ,
+    completedAt: {
         type: Number,
         default: null
     }

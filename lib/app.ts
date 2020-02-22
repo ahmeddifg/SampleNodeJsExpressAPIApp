@@ -8,7 +8,7 @@ import * as passport from "passport";
 import * as passportJWT from "passport-jwt";
 
 
-const MongoUrl = "mongodb://up0tsrjqrjrspqu:5I2lg7jJN9LM2jH3ZQwQ@b7axifqoutl17dn-mongodb.services.clever-cloud.com:27017/b7axifqoutl17dn";
+const MongoUrl = "mongodb://localhost:27017/tododb";
 
 class app {
     public app: express.Application;
@@ -34,7 +34,6 @@ class app {
     }
 
     private mongoSetup(): void {
-        mongoose.Promise = global.Promise;
         mongoose.connect(MongoUrl, {useNewUrlParser: true});
     }
 
@@ -44,14 +43,15 @@ class app {
         let JwtStrategy = passportJWT.Strategy;
         let jwtOptions = {jwtFromRequest: null, secretOrKey: null, authScheme: null};
         jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
-        jwtOptions.secretOrKey = 'mySecrectVal3';
+        jwtOptions.secretOrKey = 'mySecrectVal';
         jwtOptions.authScheme = 'cuser';
         var strategy = new JwtStrategy(jwtOptions, function (jwt_payload, next) {
-            // console.log('payload received', jwt_payload);
-            UserModel.findById(jwt_payload._id, (err, user) => {
-                console.log(user);
+            UserModel.findById(jwt_payload.token, (err, user) => {
+                console.log(jwt_payload.token);
+                if (err)
+                    console.log(err);
                 if (user) {
-                    next(user,null);
+                    next( null, user);
                 } else {
                     next(null, false);
                 }

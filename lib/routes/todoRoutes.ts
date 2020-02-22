@@ -1,5 +1,6 @@
 import {Request, Response} from "express";
 import {TodoController} from "../controllers/todoController";
+import * as passport from "passport";
 
 export class Routes {
     public todoController: TodoController = new TodoController();
